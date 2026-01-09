@@ -1,0 +1,215 @@
+.form-card {
+    width: 100%;
+    margin-bottom: 2rem;
+    padding: 1rem 1.5rem;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    background: #fff;
+    border-radius: 12px;
+}
+
+/* Compact specific adjustments */
+.form-header {
+    display: none;
+    /* User requested smaller form, context is clear */
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem 1rem;
+    align-items: end;
+    /* Align inputs and button at bottom */
+}
+
+.form-group {
+    margin: 0;
+}
+
+.form-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 0.25rem;
+}
+
+.form-input,
+.form-select {
+    width: 100%;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.875rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background-color: #fff;
+    transition: all 0.2s;
+    height: 36px;
+    /* Fixed compact height */
+}
+
+.form-input:focus,
+.form-select:focus {
+    border-color: #3b82f6;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.full-width {
+    grid-column: span 1;
+    /* Reset full width to fit grid unless necessary */
+}
+
+/* Specific Field Overrides for better fit */
+.field-customer-name {
+    grid-column: span 1;
+}
+
+.field-product {
+    grid-column: span 1;
+}
+
+.field-location {
+    grid-column: span 1;
+}
+
+.field-actions {
+    grid-column: span 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Checkbox & Radio compact styles */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    height: 36px;
+    margin-top: 1.25rem;
+    /* Align with inputs */
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: #475569;
+}
+
+.checkmark {
+    width: 1rem;
+    height: 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+input:checked~.checkmark {
+    background-color: #10b981;
+    border-color: #10b981;
+}
+
+/* Radio Group Compact */
+.recurrence-options {
+    position: absolute;
+    /* Float it to not break grid flow if needed, or better: make it small */
+    background: white;
+    border: 1px solid #e2e8f0;
+    padding: 0.5rem;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    margin-top: 0.25rem;
+}
+
+.radio-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.radio-option {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.radio-option.selected {
+    background: #e0f2fe;
+    color: #0369a1;
+    border-color: #7dd3fc;
+}
+
+/* Submit Button Compact */
+.btn-submit-compact {
+    width: 100%;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    background-color: #10b981;
+    color: white;
+    transition: background-color 0.2s;
+}
+
+.btn-submit-compact:hover {
+    background-color: #059669;
+}
+
+.action-area {
+    margin: 0;
+}
+
+/* Alert Compact */
+.alert {
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 6px;
+    background-color: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .btn-submit-compact {
+        margin-top: 1.25rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}

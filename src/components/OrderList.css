@@ -1,0 +1,467 @@
+/* OrderList.css - Professional Redesign */
+
+.order-list-container {
+    animation: fadeIn 0.4s ease-out;
+    padding: 0 0.5rem;
+}
+
+/* Card Container for the Table */
+.order-list-container .card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    overflow: hidden;
+    /* For rounded corners */
+}
+
+/* --- Table Styling --- */
+.table-responsive {
+    overflow-x: auto;
+    max-height: calc(100vh - 220px);
+    /* Sticky Header Support */
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+.order-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: auto;
+    /* Allow columns to shrink */
+}
+
+/* Sticky Header Removed */
+/* .order-table thead { ... } */
+
+.order-table th {
+    background: #f8fafc;
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.75rem;
+    /* Smaller font for headers */
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    padding: 0.75rem 0.25rem;
+    /* Compact padding */
+    text-align: center;
+    /* Center align headers */
+    border-bottom: 2px solid #e2e8f0;
+    white-space: nowrap;
+    /* Keep headers single line if possible, or change to normal if needed. Let's try nowrap first with small font */
+    transition: background 0.2s;
+}
+
+.order-table th:hover {
+    background: #f1f5f9;
+}
+
+/* Table Rows */
+.order-table tbody tr {
+    transition: all 0.2s ease-in-out;
+    background: white;
+}
+
+.order-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.order-table td {
+    padding: 0.5rem 0.25rem;
+    /* Compact padding */
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    vertical-align: middle;
+    font-size: 0.85rem;
+    /* Smaller font for data */
+    text-align: center;
+    /* Center align data */
+    white-space: normal;
+    /* Allow text wrapping */
+    word-wrap: break-word;
+}
+
+/* Fulfilled State */
+.row-fulfilled {
+    background-color: #f0fdf4 !important;
+    /* Emerald-50 */
+}
+
+.row-fulfilled td {
+    border-bottom-color: #dcfce7;
+}
+
+/* Typography Enhancements */
+.font-medium {
+    font-weight: 600;
+    color: #1e293b;
+    /* Slate-800 */
+}
+
+.text-muted {
+    color: #94a3b8;
+}
+
+/* --- Controls & Inputs --- */
+.checkbox-lg {
+    width: 1.15rem;
+    height: 1.15rem;
+    cursor: pointer;
+    border-radius: 4px;
+    border: 2px solid #cbd5e1;
+    transition: all 0.2s;
+    accent-color: #10b981;
+    /* Emerald-500 */
+}
+
+.checkbox-lg:hover {
+    transform: scale(1.1);
+}
+
+.btn-icon {
+    padding: 6px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    color: #64748b;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon:hover {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    transform: translateY(-1px);
+}
+
+.btn-icon.text-success {
+    color: #10b981;
+}
+
+.btn-icon.text-success:hover {
+    background-color: #d1fae5;
+    color: #059669;
+}
+
+.btn-icon.text-danger {
+    color: #ef4444;
+}
+
+.btn-icon.text-danger:hover {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.btn-icon.text-primary {
+    color: #3b82f6;
+}
+
+.btn-icon.text-primary:hover {
+    background-color: #dbeafe;
+    color: #2563eb;
+}
+
+/* --- Badges & Tags --- */
+.tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.tag-medicine {
+    background: #eff6ff;
+    color: #2563eb;
+    border: 1px solid #bfdbfe;
+}
+
+/* Blue */
+.tag-supplement {
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #bbf7d0;
+}
+
+/* Green */
+.tag-cosmetic {
+    background: #fdf2f8;
+    color: #db2777;
+    border: 1px solid #fbcfe8;
+}
+
+/* Pink */
+.tag-device {
+    background: #fffbeb;
+    color: #d97706;
+    border: 1px solid #fde68a;
+}
+
+/* Amber */
+.tag-other {
+    background: #f8fafc;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+}
+
+/* Slate */
+
+.tag-recurring {
+    background: #f5f3ff;
+    color: #7c3aed;
+    border: 1px solid #ddd6fe;
+    gap: 0.25rem;
+}
+
+.tag-once {
+    background: #f1f5f9;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}
+
+/* --- Filter Bar --- */
+.filters-bar {
+    display: flex;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    /* Increased padding */
+    background: white;
+    border-radius: 16px;
+    /* Larger radius */
+    border: 1px solid #e2e8f0;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    /* Softer shadow */
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Common Control Styles */
+.search-box,
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 1rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    color: #64748b;
+}
+
+.search-box {
+    flex: 2;
+    min-width: 250px;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+/* Hover & Focus States */
+.search-box:hover,
+.filter-group:hover {
+    background: #fff;
+    border-color: #cbd5e1;
+}
+
+.search-box:focus-within,
+.filter-group:focus-within {
+    background: #fff;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    transform: translateY(-1px);
+}
+
+/* Inputs Reset */
+.search-box input,
+.filter-select {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+    font-size: 0.95rem;
+    color: #1e293b;
+    font-weight: 500;
+    padding: 0;
+}
+
+.search-box input::placeholder {
+    color: #94a3b8;
+    font-weight: 400;
+}
+
+.filter-select {
+    cursor: pointer;
+    -webkit-appearance: none;
+    /* Remove default arrow to potentially add custom one if needed, but keeping simple for now */
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: left 0 center;
+    /* RTL support: arrow on left */
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-left: 2rem;
+    /* Space for Custom Arrow */
+}
+
+/* --- Editable Inputs --- */
+.form-input-sm {
+    width: 100%;
+    padding: 0.375rem 0.5rem;
+    font-size: 0.875rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    transition: all 0.15s;
+    background-color: #fff;
+}
+
+.form-input-sm:focus {
+    border-color: #3b82f6;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+/* Loading State */
+.loading-state {
+    padding: 3rem;
+    color: #64748b;
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+    background: white;
+    padding: 1.5rem;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    animation: slideUp 0.3s ease-out;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #ef4444;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modal-body {
+    margin: 1rem 0;
+    color: #334155;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animation-slide-down {
+    animation: slideDown 0.3s ease-out forwards;
+}
+
+.modal-footer .btn {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+}
+
+.modal-footer .btn-secondary {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.modal-footer .btn-secondary:hover {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.modal-footer .btn-danger {
+    background: #ef4444;
+    color: white;
+}
+
+.modal-footer .btn-danger:hover {
+    background: #dc2626;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
