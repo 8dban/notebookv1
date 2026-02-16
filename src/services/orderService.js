@@ -1,64 +1,75 @@
-
-const STORAGE_KEY = 'customer_orders_db';
-
-// Initial mock data
-const INITIAL_DATA = [
-    {
-        id: '1',
-        timestamp: new Date().toISOString(),
-        customerName: 'أحمد محمد',
-        customerId: '01012345678',
-        gender: 'male',
-        ageGroup: '18-30',
-        productName: 'فيتامين سي 1000مجم',
-        orderType: 'supplement',
-        location: 'الرياض',
-        isRecurring: false,
-        recurrenceInterval: '',
-        isFulfilled: false,
-        isContacted: false,
-        isDelivered: false
-    }
-];
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx25mhRUYiq-20z_MglwglRwl09fJEdj552ciNNbsKx6aDGysMHmbt93rg2dtWaP5Uf/exec';
 
 export const OrderService = {
     getAllOrders: async () => {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (!stored) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_DATA));
-            return INITIAL_DATA;
+        try {
+            const response = await fetch(GOOGLE_SCRIPT_URL);
+            if (!response.ok) throw new Error('Network response was not ok');
+            const data = await response.json();
+            // Ensure we return an array
+            return Array.isArray(data) ? data : [];
+        } catch (error) {
+            console.error('Error fetching orders:', error);
+            return [];
         }
-        return JSON.parse(stored);
     },
 
     addOrder: async (order) => {
-        const orders = await OrderService.getAllOrders();
         const newOrder = {
             ...order,
-            id: Date.now().toString(),
+            id: Date.now().toString(), // Generate ID here or let sheet do it? Better here for immediate UI update if needed.
             timestamp: new Date().toISOString(),
             isFulfilled: false,
             isContacted: false,
             isDelivered: false
         };
-        const updatedOrders = [newOrder, ...orders];
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedOrders));
-        return newOrder;
+
+        try {
+            // Google Apps Script often requires text/plain to avoid preflight OPTIONS issues
+            await fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'cors',
+                body: JSON.stringify({ action: 'create', data: newOrder })
+            });
+            return newOrder;
+        } catch (error) {
+            console.error('Error adding order:', error);
+            throw error;
+        }
     },
 
     updateOrder: async (orderId, updates) => {
-        const orders = await OrderService.getAllOrders();
-        const updatedOrders = orders.map(order =>
-            order.id === orderId ? { ...order, ...updates } : order
-        );
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedOrders));
-        return true;
+        try {
+            // We need to pass the ID to identify which row to update
+            await fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'cors',
+                body: JSON.stringify({
+                    action: 'update',
+                    data: { id: orderId, ...updates }
+                })
+            });
+            return true;
+        } catch (error) {
+            console.error('Error updating order:', error);
+            throw error;
+        }
     },
 
     deleteOrder: async (orderId) => {
-        const orders = await OrderService.getAllOrders();
-        const updatedOrders = orders.filter(order => order.id !== orderId);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedOrders));
-        return true;
+        try {
+            await fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'cors',
+                body: JSON.stringify({
+                    action: 'delete',
+                    data: { id: orderId }
+                })
+            });
+            return true;
+        } catch (error) {
+            console.error('Error deleting order:', error);
+            throw error;
+        }
     }
 };
