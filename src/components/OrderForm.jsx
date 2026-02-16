@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Save, Loader2, CheckCircle2 } from 'lucide-react';
+import { Save, Loader2, CheckCircle2, ChevronDown, ChevronUp, PlusCircle } from 'lucide-react';
 import { OrderService } from '../services/orderService';
 import './OrderForm.css';
 
@@ -20,6 +20,9 @@ export default function OrderForm({ onSuccess }) {
     const [locationType, setLocationType] = useState('ابورديس'); // Default from list
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [successMsg, setSuccessMsg] = useState('');
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const toggleForm = () => setIsExpanded(!isExpanded);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -76,6 +79,7 @@ export default function OrderForm({ onSuccess }) {
             if (onSuccess) onSuccess();
 
             setTimeout(() => setSuccessMsg(''), 2000);
+            setIsExpanded(false); // Collapse on success
         } catch (error) {
             console.error(error);
             alert('خطأ');
@@ -85,15 +89,24 @@ export default function OrderForm({ onSuccess }) {
     };
 
     return (
-        <div className="card form-card fade-in">
+        <div className={`card form-card fade-in ${isExpanded ? 'expanded' : ''}`}>
+            {/* Form Header / Toggle */}
+            <div className="form-header-toggle" onClick={toggleForm}>
+                <div className="flex items-center gap-2">
+                    <PlusCircle className="text-primary" size={20} />
+                    <h3 className="text-lg font-semibold text-slate-700">إضافة طلب جديد</h3>
+                </div>
+                {isExpanded ? <ChevronUp className="text-muted" /> : <ChevronDown className="text-muted" />}
+            </div>
+
             {successMsg && (
-                <div className="alert success">
+                <div className="alert success mt-4">
                     <CheckCircle2 size={16} />
                     {successMsg}
                 </div>
             )}
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="mt-4">
                 <div className="form-grid">
                     {/* Customer Name */}
                     <div className="form-group field-customer-name">

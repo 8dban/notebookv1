@@ -208,8 +208,89 @@ input:checked~.checkmark {
     }
 }
 
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @media (max-width: 640px) {
+    .form-card {
+        padding: 0;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+        margin-bottom: 1rem;
+    }
+
+    .form-header-toggle {
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        background: #f8fafc;
+        border-bottom: 1px solid transparent;
+        transition: all 0.2s;
+        touch-action: manipulation;
+        /* Improvements for touch devices */
+    }
+
+    .form-card.expanded .form-header-toggle {
+        border-bottom-color: #e2e8f0;
+        background: #fff;
+    }
+
+    /* Default hidden on mobile */
+    .form-card form {
+        display: none;
+        padding: 1rem;
+    }
+
+    /* Show when expanded */
+    .form-card.expanded form {
+        display: block;
+        animation: slideDown 0.3s ease-out;
+    }
+
     .form-grid {
         grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .checkbox-group {
+        margin-top: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    /* Ensure secondary row stacks nicely */
+    .form-card>div[style*="display: flex"] {
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 1rem !important;
+        padding: 0 1rem 1rem 1rem;
+        margin-top: 0 !important;
+    }
+
+    .form-card>div[style*="min-width: 200px"] {
+        width: 100%;
+        min-width: auto !important;
+    }
+}
+
+/* Desktop styles: Hide toggle, always show form */
+@media (min-width: 641px) {
+    .form-header-toggle {
+        display: none;
+    }
+
+    .form-card form {
+        display: block !important;
     }
 }

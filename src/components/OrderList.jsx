@@ -148,10 +148,11 @@ export default function OrderList({ activeTab }) {
     };
 
     const filteredOrders = orders.filter(order => {
+        if (!order) return false;
         const matchesSearch =
-            order.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            order.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            order.customerId.includes(searchTerm);
+            (order.customerName && order.customerName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (order.productName && order.productName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (order.customerId && String(order.customerId).includes(searchTerm));
         const matchesType = filterType === 'all' || order.orderType === filterType;
         return matchesSearch && matchesType;
     }).sort((a, b) => {
