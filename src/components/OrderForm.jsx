@@ -7,17 +7,14 @@ const DEFAULT_FORM = {
     productName: '',
     customerName: '',
     customerId: '',
-    gender: '',
-    ageGroup: '',
-    location: 'ابورديس',
     orderType: '',
+    notes: '',
     isRecurring: false,
     recurrenceInterval: 'monthly', // default
 };
 
 export default function OrderForm({ onSuccess }) {
     const [formData, setFormData] = useState(DEFAULT_FORM);
-    const [locationType, setLocationType] = useState('ابورديس'); // Default from list
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [successMsg, setSuccessMsg] = useState('');
     const [isExpanded, setIsExpanded] = useState(false);
@@ -41,27 +38,12 @@ export default function OrderForm({ onSuccess }) {
         }));
     };
 
-    const handleLocationTypeChange = (e) => {
-        const val = e.target.value;
-        setLocationType(val);
-        if (val !== 'other') {
-            setFormData(prev => ({ ...prev, location: val }));
-        } else {
-            setFormData(prev => ({ ...prev, location: '' }));
-        }
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Final validation before submit
         if (formData.customerId.length !== 11) {
             alert('رقم الموبايل يجب أن يتكون من 11 رقم');
-            return;
-        }
-
-        if (locationType === 'other' && !formData.location.trim()) {
-            alert('يرجى إدخال العنوان');
             return;
         }
 
@@ -74,7 +56,7 @@ export default function OrderForm({ onSuccess }) {
             });
 
             setSuccessMsg('تم');
-            setFormData({ ...DEFAULT_FORM, location: locationType !== 'other' ? locationType : '' });
+            setFormData({ ...DEFAULT_FORM });
 
             if (onSuccess) onSuccess();
 
@@ -163,45 +145,21 @@ export default function OrderForm({ onSuccess }) {
                         </select>
                     </div>
 
-                    {/* Gender */}
-                    <div className="form-group">
-                        <label className="form-label">الجنس</label>
-                        <select name="gender" required className="form-select" value={formData.gender} onChange={handleChange}>
-                            <option value="">اخر...</option>
-                            <option value="male">ذكر</option>
-                            <option value="female">أنثى</option>
-                        </select>
+                    {/* Additional Details */}
+                    <div className="form-group field-notes">
+                        <label className="form-label">تفاصيل إضافية (اختياري)</label>
+                        <textarea
+                            name="notes"
+                            className="form-input"
+                            placeholder="أي ملاحظات أو تفاصيل إضافية..."
+                            value={formData.notes}
+                            onChange={handleChange}
+                            rows="1"
+                            style={{ minHeight: '42px', resize: 'vertical' }}
+                        />
                     </div>
 
-                    {/* Age Group */}
-                    <div className="form-group">
-                        <label className="form-label">السن</label>
-                        <select name="ageGroup" required className="form-select" value={formData.ageGroup} onChange={handleChange}>
-                            <option value="">اختر...</option>
-                            <option value="under18">&lt; 18</option>
-                            <option value="18-30">18-30</option>
-                            <option value="31-50">31-50</option>
-                            <option value="over50">&gt; 50</option>
-                        </select>
-                    </div>
-
-                    {/* Location Dropdown */}
-                    <div className="form-group">
-                        <label className="form-label">العنوان</label>
-                        <select
-                            className="form-select"
-                            value={locationType}
-                            onChange={handleLocationTypeChange}
-                        >
-                            <option value="ابورديس">ابورديس</option>
-                            <option value="ابوزنيمة">ابوزنيمة</option>
-                            <option value="الكيلو ٩">الكيلو ٩</option>
-                            <option value="الطور">الطور</option>
-                            <option value="other">اخرى...</option>
-                        </select>
-                    </div>
-
-                    {/* Submit Button - Now always 8th item in 4-column grid */}
+                    {/* Submit Button - Now in its own cell */}
                     <div className="form-group action-area">
                         <button type="submit" className="btn-submit-compact" disabled={isSubmitting}>
                             {isSubmitting ? <Loader2 className="spin" size={16} /> : <Save size={16} />}
@@ -212,21 +170,6 @@ export default function OrderForm({ onSuccess }) {
 
                 {/* Secondary Row for Specific Options */}
                 <div style={{ marginTop: '0.75rem', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '1.5rem' }}>
-                    {/* Conditional Manual Location Input */}
-                    {locationType === 'other' && (
-                        <div className="form-group fade-in" style={{ flex: '1', minWidth: '200px' }}>
-                            <label className="form-label">تفاصيل العنوان</label>
-                            <input
-                                type="text"
-                                name="location"
-                                required
-                                className="form-input"
-                                placeholder="ادخل العنوان..."
-                                value={formData.location}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    )}
 
                     {/* Recurring Toggle & Options */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>

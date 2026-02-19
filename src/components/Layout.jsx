@@ -7,7 +7,7 @@ export default function Layout({ children }) {
       {/* Simple Header */}
       <header className="app-header">
         <div className="header-content">
-          <img src="/src/assets/logo.png" alt="شعار الصيدلية" className="header-logo" />
+          <div className="pharmacy-logo-text">صيدلية د.محمد ناصر</div>
           <h1 className="header-title">كراسة الطلبات</h1>
         </div>
         <div className="header-version">v1.1.0</div>

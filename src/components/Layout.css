@@ -25,10 +25,15 @@
     gap: 1rem;
 }
 
-.header-logo {
-    height: 40px;
-    width: auto;
-    object-fit: contain;
+.pharmacy-logo-text {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #2563eb;
+    background: #eff6ff;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #dbeafe;
+    white-space: nowrap;
 }
 
 .header-title {

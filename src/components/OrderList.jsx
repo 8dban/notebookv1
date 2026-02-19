@@ -15,16 +15,22 @@ function getOrderTypeLabel(type) {
     return types[type] || type;
 }
 
-function getGenderLabel(gender) {
-    return gender === 'male' ? 'ذكر' : 'أنثى';
-}
-
 function getRecurrenceLabel(interval) {
     return interval === 'weekly' ? 'أسبوعي' : 'شهري';
 }
 
+function formatCustomerId(id) {
+    if (!id) return '';
+    const str = String(id);
+    // If it's a 10-digit number starting with 1, it's likely a truncated Egyptian mobile number
+    if (str.length === 10 && str.startsWith('1')) {
+        return '0' + str;
+    }
+    return str;
+}
+
 function getWhatsAppUrl(order) {
-    const phone = `+2${order.customerId}`;
+    const phone = `+2${formatCustomerId(order.customerId)}`;
     const name = order.customerName;
     const product = order.productName;
     const message = `أهلاً ${name} \u{1F44B}\nنحب نبلغ حضرتك إن منتج ${product} بقى متوفر دلوقتي في صيدلية د. محمد ناصر \u{1F48A}`;
@@ -149,10 +155,18 @@ export default function OrderList({ activeTab }) {
 
     const filteredOrders = orders.filter(order => {
         if (!order) return false;
+
+        const safeSearchTerm = (searchTerm || '').toLowerCase();
+        const customerName = String(order.customerName || '').toLowerCase();
+        const productName = String(order.productName || '').toLowerCase();
+        const notes = String(order.notes || '').toLowerCase();
+        const customerId = formatCustomerId(order.customerId);
+
         const matchesSearch =
-            (order.customerName && order.customerName.toLowerCase().includes(searchTerm.toLowerCase())) ||
-            (order.productName && order.productName.toLowerCase().includes(searchTerm.toLowerCase())) ||
-            (order.customerId && String(order.customerId).includes(searchTerm));
+            customerName.includes(safeSearchTerm) ||
+            productName.includes(safeSearchTerm) ||
+            notes.includes(safeSearchTerm) ||
+            customerId.includes(searchTerm);
         const matchesType = filterType === 'all' || order.orderType === filterType;
         return matchesSearch && matchesType;
     }).sort((a, b) => {
@@ -162,9 +176,9 @@ export default function OrderList({ activeTab }) {
         let bValue = b[sortConfig.key];
 
         // Handle string comparison (case-insensitive)
-        if (typeof aValue === 'string') {
-            aValue = aValue.toLowerCase();
-            bValue = bValue.toLowerCase();
+        if (typeof aValue === 'string' || typeof bValue === 'string') {
+            aValue = String(aValue || '').toLowerCase();
+            bValue = String(bValue || '').toLowerCase();
         }
 
         if (aValue < bValue) {
@@ -189,6 +203,20 @@ export default function OrderList({ activeTab }) {
                 </select>
             );
         }
+
+        if (name === 'notes') {
+            return (
+                <textarea
+                    name={name}
+                    value={editFormData[name] || ''}
+                    onChange={handleEditChange}
+                    className="form-input-sm"
+                    rows="2"
+                    style={{ minWidth: '150px' }}
+                />
+            );
+        }
+
         return (
             <input
                 type={type}
@@ -273,16 +301,6 @@ export default function OrderList({ activeTab }) {
                                     رقم الموبايل {getSortIcon('customerId')}
                                 </div>
                             </th>
-                            <th onClick={() => handleSort('gender')} className="cursor-pointer hover:bg-slate-100 transition-colors">
-                                <div className="flex items-center justify-center gap-1">
-                                    الجنس {getSortIcon('gender')}
-                                </div>
-                            </th>
-                            <th onClick={() => handleSort('ageGroup')} className="cursor-pointer hover:bg-slate-100 transition-colors">
-                                <div className="flex items-center justify-center gap-1">
-                                    السن {getSortIcon('ageGroup')}
-                                </div>
-                            </th>
                             <th onClick={() => handleSort('productName')} className="cursor-pointer hover:bg-slate-100 transition-colors">
                                 <div className="flex items-center justify-center gap-1">
                                     المنتج {getSortIcon('productName')}
@@ -293,9 +311,9 @@ export default function OrderList({ activeTab }) {
                                     النوع {getSortIcon('orderType')}
                                 </div>
                             </th>
-                            <th onClick={() => handleSort('location')} className="cursor-pointer hover:bg-slate-100 transition-colors">
+                            <th onClick={() => handleSort('notes')} className="cursor-pointer hover:bg-slate-100 transition-colors">
                                 <div className="flex items-center justify-center gap-1">
-                                    المكان {getSortIcon('location')}
+                                    التفاصيل {getSortIcon('notes')}
                                 </div>
                             </th>
                             <th onClick={() => handleSort('isRecurring')} className="cursor-pointer hover:bg-slate-100 transition-colors">
@@ -371,13 +389,7 @@ export default function OrderList({ activeTab }) {
                                             {isEditing ? renderCell('customerName') : order.customerName}
                                         </td>
                                         <td>
-                                            {isEditing ? renderCell('customerId') : order.customerId}
-                                        </td>
-                                        <td>
-                                            {isEditing ? renderCell('gender', 'select', [{ value: 'male', label: 'ذكر' }, { value: 'female', label: 'أنثى' }]) : getGenderLabel(order.gender)}
-                                        </td>
-                                        <td>
-                                            {isEditing ? renderCell('ageGroup', 'select', [{ value: 'under18', label: '<18' }, { value: '18-30', label: '18-30' }, { value: '31-50', label: '31-50' }, { value: 'over50', label: '>50' }]) : order.ageGroup}
+                                            {isEditing ? renderCell('customerId') : formatCustomerId(order.customerId)}
                                         </td>
                                         <td>
                                             {isEditing ? renderCell('productName') : order.productName}
@@ -391,8 +403,8 @@ export default function OrderList({ activeTab }) {
                                                 { value: 'other', label: 'أخرى' }
                                             ]) : <span className={`tag tag-${order.orderType}`}>{getOrderTypeLabel(order.orderType)}</span>}
                                         </td>
-                                        <td>
-                                            {isEditing ? renderCell('location') : order.location}
+                                        <td className="text-sm">
+                                            {isEditing ? renderCell('notes') : order.notes}
                                         </td>
                                         <td>
                                             {order.isRecurring ? (
